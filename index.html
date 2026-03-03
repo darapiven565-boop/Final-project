@@ -443,10 +443,10 @@
                 <span class="task-badge">Task 01</span>
                 <h3>Знайомство з користувачами</h3>
             </div>
-            <pre>SELECT first_name, last_name, email
-FROM `bigquery-public-data.thelook_ecommerce.users`
+            <pre>SELECT first_name, last_name, email 
+FROM `bigquery-public-data.thelook_ecommerce.users` 
 WHERE country = 'Brasil'
-  AND created_at >= '2023-01-01';</pre>
+AND created_at BETWEEN '2023-01-01' AND '2023-12-31';</pre>
             <div class="screenshot">
                 <img src="sql/1_task.png" alt="Результат завдання 1">
                 <span class="caption">// результат виконання запиту 01</span>
