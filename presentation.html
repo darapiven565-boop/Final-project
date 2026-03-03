@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фінальний Проєкт — Дарина Півень</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --surface: #ffffff;
+            --surface2: #f0f3f9;
+            --border: #dde2ee;
+            --accent: #2563eb;
+            --accent2: #16a36b;
+            --accent3: #d97706;
+            --text: #1a1d2e;
+            --text-muted: #5a6080;
+            --text-dim: #9aa0bb;
+            --code-bg: #1e2235;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 40px 48px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        header {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 40px;
+            margin-bottom: 48px;
+            background: var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(79,142,247,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: 100px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(125,212,168,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .header-tag {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(79,142,247,0.1);
+            border: 1px solid rgba(79,142,247,0.25);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        header h1 span { color: var(--accent); }
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .meta-pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .meta-pill::before { content: '◆'; color: var(--accent2); font-size: 8px; }
+
+        /* ── SECTIONS ── */
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .section-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+        .section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            border: none;
+            padding: 0;
+        }
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        /* ── TASK BLOCKS ── */
+        .task-block {
+            margin-bottom: 36px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 32px;
+        }
+        .task-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .task-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .task-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(247,201,72,0.1);
+            color: var(--accent3);
+            border: 1px solid rgba(247,201,72,0.2);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+        .task-block h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ── CODE ── */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 22px;
+            overflow-x: auto;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #a8b5d1;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        pre::before {
+            content: 'SQL';
+            position: absolute;
+            top: 10px; right: 14px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        .pre-python::before { content: 'PYTHON'; }
+        .pre-output::before { content: 'OUTPUT'; color: var(--accent2); }
+
+        /* SQL keyword highlighting via CSS is not possible, keeping monochrome for simplicity */
+
+        /* ── SCREENSHOTS ── */
+        .screenshot {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .screenshot img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            object-fit: contain;
+        }
+        .caption {
+            display: block;
+            margin-top: 10px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        /* ── TABLEAU SECTION ── */
+        .tableau-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 36px 28px;
+            margin-bottom: 32px;
+        }
+        .tableau-wrapper {
+            width: 100%;
+            max-width: 100%;
+            min-height: 700px;
+            height: 700px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #fff;
+            margin-top: 12px;
+            position: relative;
+        }
+        /* The Tableau embed container */
+        #viz1772480232719 {
+            position: relative;
+            width: 100%;
+            min-height: 700px;
+        }
+        #viz1772480232719 object {
+            width: 100%;
+            min-height: 700px;
+        }
+
+        /* ── ML SECTION ── */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .metric-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .metric-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .coef-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .coef-item {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .coef-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .coef-val {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .coef-val.pos { color: var(--accent2); }
+        .coef-val.neg { color: #f78080; }
+
+        .screenshot-ml {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .screenshot-ml img { max-width: 100%; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+
+        <!-- Profile photo -->
+        <div style="display:flex; align-items:center; gap:32px; margin-bottom:28px; flex-wrap:wrap;">
+            <img src="my_photo.png" alt="Дарина Півень"
+                 style="width:110px; height:110px; border-radius:50%; object-fit:cover; object-position:top;
+                        border:3px solid var(--accent); box-shadow:0 4px 20px rgba(37,99,235,0.18); flex-shrink:0;">
+            <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase;
+                            color:var(--accent); background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2);
+                            padding:4px 12px; border-radius:4px; display:inline-block; margin-bottom:10px;">Фінальний Проєкт · 2026</div>
+                <h1 style="font-family:'Syne',sans-serif; font-size:clamp(24px,3.5vw,42px); font-weight:800; color:var(--text); line-height:1.1; margin-bottom:6px;">
+                    Звіт з <span style="color:var(--accent);">аналітики даних</span>
+                </h1>
+                <p style="font-family:'Syne',sans-serif; font-size:17px; color:var(--text-muted); font-weight:500;">Дарина Півень</p>
+            </div>
+        </div>
+
+        <div class="header-meta">
+            <div class="meta-pill">SQL · BigQuery</div>
+            <div class="meta-pill">Tableau · Візуалізація · Аналіз</div>
+            <div class="meta-pill">Machine Learning · Sklearn</div>
+            <div class="meta-pill">Виконала: Дарина Півень</div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: SQL -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-num">01</span>
+            <h2>Робота з базою даних (SQL)</h2>
+        </div>
+        <p class="section-desc">Нижче наведено 5 ключових завдань з обробки даних у BigQuery та відповідні результати виконання запитів.</p>
+
+        <!-- Task 1 -->
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 01</span>
+                <h3>Знайомство з користувачами</h3>
+            </div>
+            <pre>SELECT first_name, last_name, email
+FROM `bigquery-public-data.thelook_ecommerce.users`
+WHERE country = 'Brasil'
+  AND created_at >= '2023-01-01';</pre>
+            <div class="screenshot">
+                <img src="sql/1_task.png" alt="Результат завдання 1">
+                <span class="caption">// результат виконання запиту 01</span>
+            </div>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 02</span>
+                <h3>Топ-категорії товарів</h3>
+            </div>
+            <pre>SELECT category,
+       COUNT(id) AS product_per_category
+FROM `bigquery-public-data.thelook_ecommerce.products`
+GROUP BY category
+ORDER BY product_per_category DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/2_task.png" alt="Результат завдання 2">
+                <span class="caption">// результат виконання запиту 02</span>
+            </div>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 03</span>
+                <h3>Аналіз замовлень (JOIN)</h3>
+            </div>
+            <pre>SELECT orders.order_id,
+       users.first_name, users.last_name,
+       orders.status
+FROM `bigquery-public-data.thelook_ecommerce.orders` AS orders
+JOIN `bigquery-public-data.thelook_ecommerce.users` AS users
+  ON orders.user_id = users.id
+WHERE orders.status = 'Shipped';</pre>
+            <div class="screenshot">
+                <img src="sql/3_task.png" alt="Результат завдання 3">
+                <span class="caption">// результат виконання запиту 03</span>
+            </div>
+        </div>
+
+        <!-- Task 4 -->
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 04</span>
+                <h3>Фінанси — найдорожчі замовлення</h3>
+            </div>
+            <pre>SELECT order_id, user_id,
+       ROUND(SUM(sale_price), 2) AS sale_price
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY order_id, user_id
+ORDER BY sale_price DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/4_task.png" alt="Результат завдання 4">
+                <span class="caption">// результат виконання запиту 04</span>
+            </div>
+        </div>
+
+        <!-- Task 5 -->
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 05</span>
+                <h3>Географія покупців</h3>
+            </div>
+            <pre>SELECT country,
+       COUNT(id) AS users_amount
+FROM `bigquery-public-data.thelook_ecommerce.users`
+GROUP BY country
+HAVING COUNT(id) > 500
+ORDER BY users_amount DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/5_task.png" alt="Результат завдання 5">
+                <span class="caption">// результат виконання запиту 05</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: TABLEAU -->
+    <div class="tableau-section">
+        <div class="section-header">
+            <span class="section-num">02</span>
+            <h2>Візуалізація (Tableau)</h2>
+        </div>
+        <p class="section-desc" style="margin-bottom:10px;">Інтерактивний дашборд побудовано на основі даних thelook_ecommerce. Використовуйте вкладки та фільтри для навігації.</p>
+
+        <!-- Tableau embed — fixed version -->
+        <div class="tableau-wrapper">
+            <div class='tableauPlaceholder' id='viz1772480232719' style='position:relative; width:100%;'>
+                <noscript>
+                    <a href='#'>
+                        <img alt='Dashboard' src='https://public.tableau.com/static/images/fi/final_project_17713403575410/Dashboard1/1_rss.png' style='border:none' />
+                    </a>
+                </noscript>
+                <object class='tableauViz' style='display:none; width:100%;'>
+                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='site_root' value='' />
+                    <param name='name' value='final_project_17713403575410/Dashboard1' />
+                    <param name='tabs' value='yes' />
+                    <param name='toolbar' value='yes' />
+                    <param name='static_image' value='https://public.tableau.com/static/images/fi/final_project_17713403575410/Dashboard1/1.png' />
+                    <param name='animate_transition' value='yes' />
+                    <param name='display_static_image' value='yes' />
+                    <param name='display_spinner' value='yes' />
+                    <param name='display_overlay' value='yes' />
+                    <param name='display_count' value='yes' />
+                    <param name='language' value='uk' />
+                </object>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: ML -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-num">03</span>
+            <h2>Моделювання (Linear Regression)</h2>
+        </div>
+        <p class="section-desc">Прогнозування суми продажів (Gross Amount) на основі вікової групи покупця за допомогою лінійної регресії з OneHotEncoding.</p>
+
+        <pre class="pre-python">X = df[["Age Group"]]
+y = df["Gross Amount"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+preprocess = ColumnTransformer(
+    transformers=[
+        ("cat", OneHotEncoder(handle_unknown="ignore"), ["Age Group"])
+    ]
+)</pre>
+
+        <pre class="pre-python">lr = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", LinearRegression())
+])
+
+lr.fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+
+feature_names = lr.named_steps["preprocess"] \
+    .named_transformers_["cat"] \
+    .get_feature_names_out(["Age Group"])
+
+coefficients = lr.named_steps["model"].coef_
+
+for name, coef in zip(feature_names, coefficients):
+    print(name, coef)</pre>
+
+        <h3 style="font-family:'Syne',sans-serif; font-size:15px; color:var(--text-muted); margin:28px 0 14px; font-weight:600; letter-spacing:.5px;">Коефіцієнти моделі</h3>
+        <div class="coef-grid">
+            <div class="coef-item">
+                <span class="coef-name">18–25</span>
+                <span class="coef-val neg">−33.58</span>
+            </div>
+            <div class="coef-item">
+                <span class="coef-name">25–45</span>
+                <span class="coef-val pos">+32.31</span>
+            </div>
+            <div class="coef-item">
+                <span class="coef-name">45–60</span>
+                <span class="coef-val neg">−30.21</span>
+            </div>
+            <div class="coef-item">
+                <span class="coef-name">60 and above</span>
+                <span class="coef-val neg">−0.60</span>
+            </div>
+            <div class="coef-item">
+                <span class="coef-name">under 18</span>
+                <span class="coef-val pos">+32.08</span>
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">MAE</div>
+                <div class="metric-value">1440.04</div>
+                <div class="metric-sub">Mean Absolute Error</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">R²</div>
+                <div class="metric-value" style="color:var(--accent3);">−0.0003</div>
+                <div class="metric-sub">R² Score — модель не пояснює дисперсію</div>
+            </div>
+        </div>
+
+        <div class="screenshot-ml">
+            <img src="output.png" alt="Графік результатів ML">
+        </div>
+    </div>
+
+</div>
+
+<!-- Tableau script — loads AFTER DOM is ready -->
+<script type='text/javascript'>
+    window.addEventListener('load', function () {
+        var divElement = document.getElementById('viz1772480232719');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+
+        // Force full width and proper height
+        vizElement.style.display = 'block';
+        vizElement.style.width = '100%';
+        vizElement.style.minHeight = '700px';
+
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+    });
+</script>
+
+</body>
+</html>
