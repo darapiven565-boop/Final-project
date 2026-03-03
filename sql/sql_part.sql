@@ -2,7 +2,7 @@
 SELECT first_name, last_name, email 
 FROM `bigquery-public-data.thelook_ecommerce.users` 
 WHERE country = 'Brasil'
-AND created_at >= '2023-01-01'
+AND created_at BETWEEN '2023-01-01' AND '2023-12-31'
 
 -- 2 task
 SELECT category,  
