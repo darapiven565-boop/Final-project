@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фінальний Проєкт — Дарина Півень</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --surface: #ffffff;
+            --surface2: #f0f3f9;
+            --border: #dde2ee;
+            --accent: #2563eb;
+            --accent2: #16a36b;
+            --accent3: #d97706;
+            --text: #1a1d2e;
+            --text-muted: #5a6080;
+            --text-dim: #9aa0bb;
+            --code-bg: #1e2235;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 40px 48px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 40px;
+            margin-bottom: 48px;
+            background: var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(79,142,247,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: 100px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(125,212,168,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .meta-pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .meta-pill::before { content: '◆'; color: var(--accent2); font-size: 8px; }
+
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .section-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+        .section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            border: none;
+            padding: 0;
+        }
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .task-block {
+            margin-bottom: 36px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 32px;
+        }
+        .task-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .task-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .task-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(247,201,72,0.1);
+            color: var(--accent3);
+            border: 1px solid rgba(247,201,72,0.2);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+        .task-block h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 22px;
+            overflow-x: auto;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #a8b5d1;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        pre::before {
+            content: 'SQL';
+            position: absolute;
+            top: 10px; right: 14px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        .pre-python::before { content: 'PYTHON'; }
+
+        .screenshot {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .screenshot img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            object-fit: contain;
+        }
+        .caption {
+            display: block;
+            margin-top: 10px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        /* ── TABLEAU ── */
+        .tableau-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 36px 28px;
+            margin-bottom: 32px;
+        }
+
+        /* Outer clips to 85% height = 700 * 0.85 = 595px */
+        .tableau-scale-outer {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            margin-top: 12px;
+            height: 595px;
+        }
+        /* Inner is full size, scaled down 85% from top-left */
+        .tableau-scale-inner {
+            width: calc(100% / 0.85);
+            height: 700px;
+            transform: scale(0.85);
+            transform-origin: top left;
+        }
+
+        #viz1772480232719 {
+            position: relative;
+            width: 100%;
+            min-height: 700px;
+        }
+        #viz1772480232719 object {
+            width: 100%;
+            min-height: 700px;
+        }
+
+        /* ── ML ── */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .metric-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .metric-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .coef-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .coef-item {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .coef-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .coef-val {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .coef-val.pos { color: var(--accent2); }
+        .coef-val.neg { color: #f78080; }
+
+        .screenshot-ml {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .screenshot-ml img { max-width: 100%; border-radius: 6px; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 56px 40px 48px;
+            margin-top: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: 50%;
+            transform: translateX(-50%);
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .footer-thank {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(28px, 4vw, 52px);
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .footer-thank span { color: var(--accent); }
+        .footer-divider {
+            width: 56px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+        .footer-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            position: relative;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .footer-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        }
+        .footer-link-github {
+            background: #1a1d2e;
+            color: #fff;
+        }
+        .footer-link-tableau {
+            background: var(--accent);
+            color: #fff;
+        }
+        .footer-link svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+        .qr-cards { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; position: relative; }
+        .qr-card { display: flex; flex-direction: column; align-items: center; gap: 14px; text-decoration: none; transition: transform 0.25s; }
+        .qr-card:hover { transform: translateY(-5px); }
+        .qr-frame { background: #fff; border: 2px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: 0 6px 24px rgba(37,99,235,0.08); }
+        .qr-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.5px; }
+        .qr-label svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <div style="display:flex; align-items:center; gap:32px; margin-bottom:28px; flex-wrap:wrap;">
+            <img src="my_photo.png" alt="Дарина Півень"
+                 style="width:110px; height:110px; border-radius:50%; object-fit:cover; object-position:top;
+                        border:3px solid var(--accent); box-shadow:0 4px 20px rgba(37,99,235,0.18); flex-shrink:0;">
+            <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase;
+                            color:var(--accent); background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2);
+                            padding:4px 12px; border-radius:4px; display:inline-block; margin-bottom:10px;">Фінальний Проєкт · 2026</div>
+                <h1 style="font-family:'Syne',sans-serif; font-size:clamp(24px,3.5vw,42px); font-weight:800; color:var(--text); line-height:1.1; margin-bottom:6px;">
+                    Звіт з <span style="color:var(--accent);">аналітики даних</span>
+                </h1>
+                <p style="font-family:'Syne',sans-serif; font-size:17px; color:var(--text-muted); font-weight:500;">Дарина Півень</p>
+            </div>
+        </div>
+
+        <div class="header-meta">
+            <div class="meta-pill">SQL · BigQuery</div>
+            <div class="meta-pill">Tableau · Візуалізація · Аналіз</div>
+            <div class="meta-pill">Machine Learning · Sklearn</div>
+            <div class="meta-pill">Виконала: Дарина Півень</div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: SQL -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-num">01</span>
+            <h2>Робота з базою даних (SQL)</h2>
+        </div>
+        <p class="section-desc">Нижче наведено 5 ключових завдань з обробки даних у BigQuery та відповідні результати виконання запитів.</p>
+
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 01</span>
+                <h3>Знайомство з користувачами</h3>
+            </div>
+            <pre>SELECT first_name, last_name, email
+FROM `bigquery-public-data.thelook_ecommerce.users`
+WHERE country = 'Brasil'
+  AND created_at >= '2023-01-01';</pre>
+            <div class="screenshot">
+                <img src="sql/1_task.png" alt="Результат завдання 1">
+                <span class="caption">// результат виконання запиту 01</span>
+            </div>
+        </div>
+
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 02</span>
+                <h3>Топ-категорії товарів</h3>
+            </div>
+            <pre>SELECT category,
+       COUNT(id) AS product_per_category
+FROM `bigquery-public-data.thelook_ecommerce.products`
+GROUP BY category
+ORDER BY product_per_category DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/2_task.png" alt="Результат завдання 2">
+                <span class="caption">// результат виконання запиту 02</span>
+            </div>
+        </div>
+
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 03</span>
+                <h3>Аналіз замовлень (JOIN)</h3>
+            </div>
+            <pre>SELECT orders.order_id,
+       users.first_name, users.last_name,
+       orders.status
+FROM `bigquery-public-data.thelook_ecommerce.orders` AS orders
+JOIN `bigquery-public-data.thelook_ecommerce.users` AS users
+  ON orders.user_id = users.id
+WHERE orders.status = 'Shipped';</pre>
+            <div class="screenshot">
+                <img src="sql/3_task.png" alt="Результат завдання 3">
+                <span class="caption">// результат виконання запиту 03</span>
+            </div>
+        </div>
+
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 04</span>
+                <h3>Фінанси — найдорожчі замовлення</h3>
+            </div>
+            <pre>SELECT order_id, user_id,
+       ROUND(SUM(sale_price), 2) AS sale_price
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY order_id, user_id
+ORDER BY sale_price DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/4_task.png" alt="Результат завдання 4">
+                <span class="caption">// результат виконання запиту 04</span>
+            </div>
+        </div>
+
+        <div class="task-block">
+            <div class="task-label">
+                <span class="task-badge">Task 05</span>
+                <h3>Географія покупців</h3>
+            </div>
+            <pre>SELECT country,
+       COUNT(id) AS users_amount
+FROM `bigquery-public-data.thelook_ecommerce.users`
+GROUP BY country
+HAVING COUNT(id) > 500
+ORDER BY users_amount DESC;</pre>
+            <div class="screenshot">
+                <img src="sql/5_task.png" alt="Результат завдання 5">
+                <span class="caption">// результат виконання запиту 05</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: TABLEAU -->
+    <div class="tableau-section">
+        <div class="section-header">
+            <span class="section-num">02</span>
+            <h2>Візуалізація (Tableau)</h2>
+        </div>
+        <p class="section-desc" style="margin-bottom:10px;">Інтерактивний дашборд побудовано на основі даних thelook_ecommerce. Використовуйте вкладки та фільтри для навігації.</p>
+
+        <div class="tableau-scale-outer">
+            <div class="tableau-scale-inner">
+                <div class='tableauPlaceholder' id='viz1772480232719' style='position:relative; width:100%;'>
+                    <noscript>
+                        <a href='#'>
+                            <img alt='Dashboard' src='https://public.tableau.com/static/images/fi/final_project_17713403575410/Dashboard1/1_rss.png' style='border:none' />
+                        </a>
+                    </noscript>
+                    <object class='tableauViz' style='display:none; width:100%;'>
+                        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                        <param name='embed_code_version' value='3' />
+                        <param name='site_root' value='' />
+                        <param name='name' value='final_project_17713403575410/Dashboard1' />
+                        <param name='tabs' value='yes' />
+                        <param name='toolbar' value='yes' />
+                        <param name='static_image' value='https://public.tableau.com/static/images/fi/final_project_17713403575410/Dashboard1/1.png' />
+                        <param name='animate_transition' value='yes' />
+                        <param name='display_static_image' value='yes' />
+                        <param name='display_spinner' value='yes' />
+                        <param name='display_overlay' value='yes' />
+                        <param name='display_count' value='yes' />
+                        <param name='language' value='uk' />
+                    </object>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: ML -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-num">03</span>
+            <h2>Моделювання (Linear Regression)</h2>
+        </div>
+        <p class="section-desc">Прогнозування суми продажів (Gross Amount) на основі вікової групи покупця за допомогою лінійної регресії з OneHotEncoding.</p>
+
+        <pre class="pre-python">X = df[["Age Group"]]
+y = df["Gross Amount"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+preprocess = ColumnTransformer(
+    transformers=[
+        ("cat", OneHotEncoder(handle_unknown="ignore"), ["Age Group"])
+    ]
+)</pre>
+
+        <pre class="pre-python">lr = Pipeline(steps=[
+    ("preprocess", preprocess),
+    ("model", LinearRegression())
+])
+
+lr.fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+
+feature_names = lr.named_steps["preprocess"] \
+    .named_transformers_["cat"] \
+    .get_feature_names_out(["Age Group"])
+
+coefficients = lr.named_steps["model"].coef_
+
+for name, coef in zip(feature_names, coefficients):
+    print(name, coef)</pre>
+
+        <h3 style="font-family:'Syne',sans-serif; font-size:15px; color:var(--text-muted); margin:28px 0 14px; font-weight:600; letter-spacing:.5px;">Коефіцієнти моделі</h3>
+        <div class="coef-grid">
+            <div class="coef-item"><span class="coef-name">18–25</span><span class="coef-val neg">−33.58</span></div>
+            <div class="coef-item"><span class="coef-name">25–45</span><span class="coef-val pos">+32.31</span></div>
+            <div class="coef-item"><span class="coef-name">45–60</span><span class="coef-val neg">−30.21</span></div>
+            <div class="coef-item"><span class="coef-name">60 and above</span><span class="coef-val neg">−0.60</span></div>
+            <div class="coef-item"><span class="coef-name">under 18</span><span class="coef-val pos">+32.08</span></div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">MAE</div>
+                <div class="metric-value">1440.04</div>
+                <div class="metric-sub">Mean Absolute Error</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">R²</div>
+                <div class="metric-value" style="color:var(--accent3);">−0.0003</div>
+                <div class="metric-sub">R² Score — модель не пояснює дисперсію</div>
+            </div>
+        </div>
+
+        <div class="screenshot-ml">
+            <img src="output.png" alt="Графік результатів ML">
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-thank">Дякую <span>за увагу</span> 🎉</div>
+        <div class="footer-divider"></div>
+        <p class="footer-sub">Проєкт виконала Дарина Півень · 2026</p>
+        <div class="qr-cards">
+    <a href="https://github.com/darapiven565-boop/Final-project" target="_blank" class="qr-card">
+        <div class="qr-frame"><div id="qr-github"></div></div>
+        <div class="qr-label">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            GitHub
+        </div>
+    </a>
+    <a href="https://public.tableau.com/app/profile/daryna.piven/viz/final_project_17713403575410/Dashboard1" target="_blank" class="qr-card">
+        <div class="qr-frame"><div id="qr-tableau"></div></div>
+        <div class="qr-label">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 2v4.5H9V8h2.5v4.5H13V8h2.5V6.5H13V2h-1.5zm-7 7V13H2v1.5h2.5V19H6v-4.5h2.5V13H6V9H4.5zM18 9v4H15.5v1.5H18V19h1.5v-4.5H22V13h-2.5V9H18zM11.5 15.5V20H13v-4.5h2.5V14H13v-.5h-1.5V14H9v1.5h2.5z"/></svg>
+            Tableau Dashboard
+        </div>
+    </a>
+</div>
+    </footer>
+
+</div>
+
+<script type='text/javascript'>
+    window.addEventListener('load', function () {
+        var divElement = document.getElementById('viz1772480232719');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.display = 'block';
+        vizElement.style.width = '100%';
+        vizElement.style.minHeight = '700px';
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+    });
+</script>
+<script>
+    window.addEventListener('load', function () {
+        new QRCode(document.getElementById('qr-github'), {
+            text: 'https://github.com/darapiven565-boop/Final-project',
+            width: 160, height: 160,
+            colorDark: '#1a1d2e', colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+        new QRCode(document.getElementById('qr-tableau'), {
+            text: 'https://public.tableau.com/app/profile/daryna.piven/viz/final_project_17713403575410/Dashboard1',
+            width: 160, height: 160,
+            colorDark: '#2563eb', colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    });
+</script>
+</body>
+</html>
